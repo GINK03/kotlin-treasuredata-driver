@@ -7,6 +7,12 @@ import com.treasuredata.client.model.*
 import java.io.InputStream
 import java.io.File
 
+fun fraction(array: ArrayValue ) { 
+  // ここを自由に編集して、任意の実装をしてください
+  println(array)
+}
+
+
 fun main(args: Array<String>) { 
   val client = TDClient.newClient();
   println("Start connecting to TreasureData Database.")
@@ -28,8 +34,7 @@ fun main(args: Array<String>) {
   println("Unpackerが呼び出されました")
   while( unpacker.hasNext() ) {
     val array = unpacker.unpackValue().asArrayValue()
-    // ここに任意の処理を書いてください
-    println(array)
+    fraction(array)
   }
   println("Finished access to TresureData Database.")
   System.exit(0)
