@@ -1,11 +1,17 @@
 # Kotlin TreasureData Driver
 
+<p align="center">
+  <img src="https://cloud.githubusercontent.com/assets/4949982/24949397/6cb8e15c-1fa8-11e7-94d6-e96622d1f4b4.png">
+</p>
+
+
 ## 開発の経緯
 
 ### 諸問題
 - 非構造化データを分析できるエンジニア/サイエンティストが少なすぎる
 - TresureDataという非構造化データをバックエンドでもち、表面的に構造化データとして扱えるサービスがあるが、このUIに特化してしまい、非構造化データと組み合わせて分析できる人がすくない。
 - Apache Sparkと連携するたびに、TreasureDataのデータをWeb UIよりダンプして、Sparkに格納して、デシリアライズするという非現実的な複雑なオペレーションの解消
+- 定期タスク化の促進（一度jarファイルで出力してしまえば、cronに登録しておけば、自動で実行可能）
 
 ### 解決のアプローチ
 - Scala Likeで使えるKotlinでTreasureDataをDriveして、非構造化データと、構造化データの両方を分析できるテンプレートを提供する
