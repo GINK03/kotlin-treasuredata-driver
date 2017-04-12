@@ -8,7 +8,7 @@
 - Apache Sparkと連携するたびに、TreasureDataのデータをWeb UIよりダンプして、Sparkに格納して、デシリアライズするという非現実的な複雑なオペレーションの解消
 
 ### 解決のアプローチ
-- Scala Likeで使えるTreasureDataのDriveして、非構造化データと、構造化データの両方を分析できるテンプレートを提供する
+- Scala Likeで使えるKotlinでTreasureDataをDriveして、非構造化データと、構造化データの両方を分析できるテンプレートを提供する
 
 ### 使い方
 1. TreasureDataに投げるクエリをkotlinDriver.sqlに記述する
