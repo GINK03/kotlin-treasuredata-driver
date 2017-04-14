@@ -1,1 +1,1 @@
-select * from dac_aonesync.audience_data limit 1000;
+SELECT * FROM tech_batch.latest_60days WHERE TD_TIME_RANGE (time, '2017-04-06', null, 'JST') LIMIT 1000

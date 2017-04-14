@@ -3,13 +3,23 @@ import com.google.common.base.Function
 import org.msgpack.core.MessagePack
 import org.msgpack.core.MessageUnpacker
 import org.msgpack.value.ArrayValue
+import org.msgpack.core.MessageFormat
 import com.treasuredata.client.model.*
 import java.io.InputStream
 import java.io.File
+import kotlin.String
+
+fun latest60DayParse(array: ArrayValue) { 
+  array.mapIndexed { i, entry ->
+    println("${i}, ${entry.toString()}")
+  
+  }
+}
 
 fun fraction(array: ArrayValue ) { 
   // ここを自由に編集して、任意の実装をしてください
-  println(array)
+  //println(array)
+  latest60DayParse(array)
 }
 
 
@@ -20,7 +30,9 @@ fun main(args: Array<String>) {
     db.getName().toString()
   }.toList()
   names.map { name -> println("There is Database of ${name}.") }
-  val jobId = client.submit(TDJobRequest.newPrestoQuery("dac_aonesync",
+  // prestoは3倍ぐらいhiveより早いが、メモリが全然足りない40G ~ 80Gで死んでしまう
+  //val jobId = client.submit(TDJobRequest.newPrestoQuery("dac_aonesync",
+  val jobId = client.submit(TDJobRequest.newHiveQuery("tech_batch",
       File("kotlinDriver.sql").readText() ));
   val backOff          = ExponentialBackOff()
   val job:TDJobSummary = client.jobStatus(jobId)
