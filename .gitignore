@@ -1,5 +1,9 @@
 *.jar
 jars/*.jar
+dataset/*
 *.tsv
 *.json
 *.csv
+examples/download/*
+td-client-java/*
+*.txt

@@ -9,9 +9,11 @@ import java.io.InputStream
 import java.io.File
 import kotlin.String
 
+import com.google.gson.Gson                                                                                                                                                                                                    import com.google.gson.GsonBuilder
 
+val gson = Gson()
 fun fraction(array: ArrayValue ) { 
-  println(array)
+  println( gson.toJson(array.toList()) )
 }
 
 
