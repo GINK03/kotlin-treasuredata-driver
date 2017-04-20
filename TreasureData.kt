@@ -13,7 +13,7 @@ import com.google.gson.Gson                                                     
 
 val gson = Gson()
 fun fraction(array: ArrayValue ) { 
-  println( gson.toJson(array.toList()) )
+  println( gson.toJson( array.toList().map{ x -> x.toString()} ) )
 }
 
 
@@ -30,22 +30,10 @@ fun main(args: Array<String>) {
       File("kotlinDriver.sql").readText() ));
   val backOff          = ExponentialBackOff()
   val job:TDJobSummary = client.jobStatus(jobId)
-  var status = client.jobStatus(jobId).getStatus().isFinished()
-  var counter:Int = 0
-  while(!status ) {
-    //Thread.sleep(backOff.nextWaitTimeMillis().toLong())
-    /*try { */
-      status  = client.jobStatus(jobId).getStatus().isFinished() 
-
-      counter += 1
-      println(counter)
-    /*} catch (e : java.nio.channels.ClosedChannelException ) { 
-      println(e)
-    }*/
-  }
-  if ( !status ) { 
-    println("Error can not be controled. will shutdown.")
-    System.exit(0)
+  for (counter in (0..10000000)) {
+    if( client.jobStatus(jobId).getStatus().isFinished() ) break
+    println("now iter ${counter}")
+    Thread.sleep(300)
   }
   val jobInfo:TDJob    = client.jobInfo(jobId)
   println("log:\n ${jobInfo.getCmdOut()}")
