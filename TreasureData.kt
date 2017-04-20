@@ -9,22 +9,14 @@ import java.io.InputStream
 import java.io.File
 import kotlin.String
 
-fun latest60DayParse(array: ArrayValue) { 
-  array.mapIndexed { i, entry ->
-    println("${i}, ${entry.toString()}")
-  
-  }
-}
 
 fun fraction(array: ArrayValue ) { 
-  // ここを自由に編集して、任意の実装をしてください
-  //println(array)
-  latest60DayParse(array)
+  println(array)
 }
 
 
 fun main(args: Array<String>) { 
-  val client = TDClient.newClient();
+  val client = TDClient.newClient()
   println("Start connecting to TreasureData Database.")
   val names:List<String> = client.listDatabases().map { db -> 
     db.getName().toString()
@@ -36,8 +28,22 @@ fun main(args: Array<String>) {
       File("kotlinDriver.sql").readText() ));
   val backOff          = ExponentialBackOff()
   val job:TDJobSummary = client.jobStatus(jobId)
-  while(!client.jobStatus(jobId).getStatus().isFinished()) {
-    Thread.sleep(backOff.nextWaitTimeMillis().toLong())
+  var status = client.jobStatus(jobId).getStatus().isFinished()
+  var counter:Int = 0
+  while(!status ) {
+    //Thread.sleep(backOff.nextWaitTimeMillis().toLong())
+    /*try { */
+      status  = client.jobStatus(jobId).getStatus().isFinished() 
+
+      counter += 1
+      println(counter)
+    /*} catch (e : java.nio.channels.ClosedChannelException ) { 
+      println(e)
+    }*/
+  }
+  if ( !status ) { 
+    println("Error can not be controled. will shutdown.")
+    System.exit(0)
   }
   val jobInfo:TDJob    = client.jobInfo(jobId)
   println("log:\n ${jobInfo.getCmdOut()}")

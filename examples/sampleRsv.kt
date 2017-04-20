@@ -1,4 +1,3 @@
-
 import java.io.File 
 import java.io.FileReader
 import java.io.BufferedReader
@@ -36,7 +35,7 @@ fun minify() {
   while(true) {
     counter += 1
     if( counter % 1000 == 0 ) { 
-      printerr("now iter ${counter}")
+      //printerr("now iter ${counter}")
     }
     val line = br.readLine()
     if( line == null) break
@@ -59,10 +58,13 @@ fun minify() {
     }.map { xs ->
       Pair(xs[0], xs[1])
     }.toMap()
+    //println(raw)
     val keywords = zip["keywords"]
     val nowWatch = zip["referer"]
-    if( keywords != "null" ) { 
-      println("${keywords} ${time} ${nowWatch}")
+    val ipao9702 = try { URLDecoder.decode(raw["ipao9702"]) } catch(e: Exception) { null } 
+    if( ipao9702 != null ) { 
+      val flag = if( ipao9702.contains("?") ) { "ng" } else { "ok" } 
+      println("${ipao9702} ${flag} ${time} ${nowWatch} ${decoded}")
     }
   }
 }
@@ -86,11 +88,14 @@ fun checkHatena() {
     }
   }
 }
+
 fun main(args: Array<String>) { 
-  val MODE:String? = args.getOrElse(0) { null }
+  val MODE:String? = args.last()
+  println(args.toList())
   when(MODE) { 
     null -> { println("no mode specified"); System.exit(0) }
-    "minify" -> { minify() }
-    "hatena" -> { checkHatena() }
+    "--minify" -> { minify() }
+    "--hatena" -> { checkHatena() }
+    "--jsonize" -> jsonize()
   }
 }
