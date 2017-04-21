@@ -16,6 +16,9 @@ fun fraction(array: ArrayValue ) {
   println( gson.toJson( array.toList().map{ x -> x.toString()} ) )
 }
 
+fun <T> printerr(t: T) {
+  System.`err`.println(t)
+}
 
 fun main(args: Array<String>) { 
   val client = TDClient.newClient()
@@ -32,7 +35,7 @@ fun main(args: Array<String>) {
   val job:TDJobSummary = client.jobStatus(jobId)
   for (counter in (0..10000000)) {
     if( client.jobStatus(jobId).getStatus().isFinished() ) break
-    println("now iter ${counter}")
+    printerr("now iter ${counter}")
     Thread.sleep(300)
   }
   val jobInfo:TDJob    = client.jobInfo(jobId)
