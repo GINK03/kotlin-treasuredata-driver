@@ -1,0 +1,12 @@
+machine:
+  java:
+    version: openjdk7
+
+test:
+  override:
+    - mvn test findbugs:check
+    - cp -af target/site/* $CIRCLE_ARTIFACTS
+
+notify:
+  webhooks:
+    - url: http://td-beda.herokuapp.com/circleci_callback
