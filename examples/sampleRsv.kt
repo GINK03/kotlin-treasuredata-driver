@@ -28,7 +28,6 @@ fun minify() {
   val gson = Gson()
   val listType = object : TypeToken<List<String>>() {}.type
   while(true) {
-    counter += 1
     if( counter % 1000 == 0 ) { 
       //printerr("now iter ${counter}")
     }
@@ -66,14 +65,19 @@ fun minify() {
     if( ipao9702 != null ) { 
       val flag = if( ipao9702.contains("?") ) { "ng" } else { "ok" } 
       val outPut = "${epochConv(time)} ${time.replace(" ", "_")} ${ipao9702} ${flag} encSrc=${realSrc} encRef=${realReferrer} origRef=${nowWatch}"
-      if( outPut.contains("ng") ) { 
-        printerr("err ${outPut}")
-        printerr("${urlDecoded}")
-      }
       if( !outPut.contains("search.yahoo.co.jp") ) continue
-      println(outPut)
+      counter += 1
+      if( outPut.contains("ng") ) { 
+        //printerr("err ${outPut}")
+        //printerr("${urlDecoded}")
+        println("${counter} ng")
+      } else {
+        //printerr("${urlDecoded}")
+        println("${counter} ok")
+      }
+      // println(outPut)
       if( Random().nextInt(100) < 5 ) { 
-        printerr("${counter} ${epochConv(time)} ${time.replace(" ", "_")} ${ipao9702} ${flag} encSrc=${realSrc} encRef=${realReferrer} origRef${nowWatch}")
+        //printerr("${counter} ${epochConv(time)} ${time.replace(" ", "_")} ${ipao9702} ${flag} encSrc=${realSrc} encRef=${realReferrer} origRef${nowWatch}")
       }
     }
   }
