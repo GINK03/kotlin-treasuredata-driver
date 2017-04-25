@@ -6,6 +6,7 @@ import java.net.URLDecoder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlin.concurrent.thread
+import java.lang.Thread
 
 data class Data(val c:MutableList<Pair<String, String>> = mutableListOf() )
 
@@ -21,9 +22,9 @@ fun coefDataset() {
   var count = 0
   while(true) {
     val line = br.readLine()
-    //if ( count > 1000000 ) break
+    if ( count > 100000000 ) break
     if ( count % 10000 == 0 ) { 
-      printerr("now iter ${count}")
+      printerr("now iter ${count} activeThreads=${Thread.activeCount()}")
     }
     count += 1
     if ( line == null) break
@@ -34,6 +35,7 @@ fun coefDataset() {
           val(k, v) = kv
           Pair(k, v)
         }.toMap().toMutableMap()
+        if( zip.get("tuuid") == null || zip.get("tuuid") == "null" ) throw Exception()
         try { 
           val request_uri = URLDecoder.decode(zip["request_uri"].toString())
               .split("?").last()
@@ -44,7 +46,6 @@ fun coefDataset() {
           }.toMap()
           zip["request_uri"] = "${request_uri}"
           if( request_uri.get("ipao9702") == null ) throw Exception()
-          if( zip.get("tuuid") == null || zip.get("tuuid") == "null" ) throw Exception()
           val tuuid = zip["tuuid"].toString()
           val data  = Pair( zip["date_time"].toString(), request_uri!!["ipao9702"]!! )
           when(tuuid_data.get(tuuid)) {
