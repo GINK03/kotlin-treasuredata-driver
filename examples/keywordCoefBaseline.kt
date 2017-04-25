@@ -9,8 +9,38 @@ import kotlin.concurrent.thread
 import java.lang.Thread
 
 data class Data(val c:MutableList<Pair<String, String>> = mutableListOf() )
+val runtime = Runtime.getRuntime()
+// STEP 2, word2vecで加工する前の段階にする
+fun makePlaneText() {
+  val gson = Gson()
+  val type = object : TypeToken<Data>() {}.type
+  val br = BufferedReader(FileReader("tuuid.keywords.json.trial"))
+  while(true) {
+    val line = br.readLine()
+    if(line == null) break
+    try { 
+      val json = line!!.slice(37..line.length -1)
+      val tuuid = line!!.slice(0..36)
+      val data = gson.fromJson<Data>(json, type) as Data
+      val s    = data.c.sortedBy { x ->
+        val (time, keywords) = x
+        time
+      }.map { x ->
+        "${x.second}"
+      }.joinToString(" ")
+      if( s == "" ) continue
+      println(s)
+    }catch(e: java.lang.IllegalStateException) {
+      continue
+    }catch(e: com.google.gson.JsonSyntaxException) {
+      continue
+    }catch(e: java.lang.StringIndexOutOfBoundsException) {
+      continue
+    }
+  }
+}
 
-
+// STEP 1,データセットを成形加工する
 fun coefDataset() { 
   val gson = Gson()
   val type = object : TypeToken<List<String>>() {}.type
@@ -24,7 +54,9 @@ fun coefDataset() {
     val line = br.readLine()
     if ( count > 100000000 ) break
     if ( count % 10000 == 0 ) { 
-      printerr("now iter ${count} activeThreads=${Thread.activeCount()}")
+      val totalMemory = runtime.totalMemory() / 1000000L
+      val freeMemory  = runtime.freeMemory()  / 1000000L
+      printerr("now iter ${count} activeThreads=${Thread.activeCount()} totalMemory=${totalMemory} freeMemory=${freeMemory}")
     }
     count += 1
     if ( line == null) break
@@ -153,6 +185,9 @@ fun main(args: Array<String>) {
   println("this program dealiong weekday feat calculator...")
   if( args.toList().contains("--coef") ) {
     coefDataset()
+  }
+  if( args.toList().contains("--plane") ) {
+    makePlaneText()
   }
   if( args.toList().contains("--exe") ) {
     executor()
