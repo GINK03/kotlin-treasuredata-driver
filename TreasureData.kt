@@ -9,11 +9,16 @@ import java.io.InputStream
 import java.io.File
 import kotlin.String
 
-import com.google.gson.Gson                                                                                                                                                                                                    import com.google.gson.GsonBuilder
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+
 
 val gson = Gson()
+
+
 fun fraction(array: ArrayValue ) { 
-  println( gson.toJson( array.toList().map{ x -> x.toString()} ) )
+  //println( gson.toJson( array.toList().map{ x -> x.toString()} ) )
+  tuuidInv(array.toList().map{ x -> x.toString() })
 }
 
 fun <T> printerr(t: T) {
@@ -35,8 +40,8 @@ fun main(args: Array<String>) {
   val job:TDJobSummary = client.jobStatus(jobId)
   for (counter in (0..10000000)) {
     if( client.jobStatus(jobId).getStatus().isFinished() ) break
-    printerr("now iter ${counter}")
-    Thread.sleep(300)
+    printerr("waiting result... now iter ${counter}...")
+    Thread.sleep(500)
   }
   val jobInfo:TDJob    = client.jobInfo(jobId)
   println("log:\n ${jobInfo.getCmdOut()}")
@@ -47,6 +52,7 @@ fun main(args: Array<String>) {
     val array = unpacker.unpackValue().asArrayValue()
     fraction(array)
   }
+  _closeDb()
   println("Finished access to TresureData Database.")
   System.exit(0)
 }
