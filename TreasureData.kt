@@ -18,7 +18,7 @@ val gson = Gson()
 
 fun fraction(array: ArrayValue ) { 
   //println( gson.toJson( array.toList().map{ x -> x.toString()} ) )
-  tuuidInv(array.toList().map{ x -> x.toString() })
+  //tuuidInv(array.toList().map{ x -> x.toString() })
 }
 
 fun <T> printerr(t: T) {
@@ -52,7 +52,6 @@ fun main(args: Array<String>) {
     val array = unpacker.unpackValue().asArrayValue()
     fraction(array)
   }
-  _closeDb()
   println("Finished access to TresureData Database.")
   System.exit(0)
 }
