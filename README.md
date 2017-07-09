@@ -11,9 +11,10 @@
 - TresureDataという非構造化データをバックエンドでもち、表面的に構造化データとして扱えるサービスがあるが、このUIに特化してしまい、非構造化データと組み合わせて分析できる人がすくない。
 - Apache Sparkと連携するたびに、TreasureDataのデータをWeb UIよりダンプして、Sparkに格納して、デシリアライズするという非現実的な複雑なオペレーションの解消
 - 定期タスク化の促進（一度jarファイルで出力してしまえば、cronに登録しておけば、自動で実行可能）
+- 技術レベルの向上(Java以外の関数型言語等は使えた方がいい)
 
 ### 解決のアプローチ
-- Scala Likeで使えるKotlinでTreasureDataをDriveして、非構造化データと、構造化データの両方を分析できるテンプレートを提供する
+- Scala Likeで使えるKotlinでTreasureDataを構造化して、非構造化データと、構造化データの両方を分析できるテンプレートを提供する
 
 ### 使い方
 1. TreasureDataに投げるクエリをkotlinDriver.sqlに記述する
@@ -21,14 +22,28 @@
 3. compile.treasureData.shを実行してコンパイル
 4. run.treasureData.shを実行してtreasureDataのデータの取得して結果を得る
 
-### セットアップ
-プログラムをダウンロードする
-```sh
+### セットアップ & 実行
+1. プログラムをダウンロードする
+```console
 $ git clone gink03/kotlin-treasuredata-driver
 ```
-依存するjarをダウンロードする
+2. 依存するjarをダウンロードする
 ```sh
 $ sh download-setup-jars.sh
+```
+3. 基礎プログラムをコンパイルする
+```console
+$ sh compile.tdhandler.sh
+```
+4. (編集し終わったら)全体をコンパイルする
+```console
+$ sh compile.treasureData.sh 
+```
+
+### 実行
+td-clientのセットアップを行なったあとに行なってください
+```console
+$ sh run.treasureData.sh
 ```
 
 ### 任意の編集する箇所
@@ -42,13 +57,10 @@ import org.msgpack.value.ArrayValue
 import com.treasuredata.client.model.*
 import java.io.InputStream
 import java.io.File
-
 fun fraction(array: ArrayValue ) {
   // ここを自由に編集して、任意の実装をしてください
   println(array)
 }
-
-
 fun main(args: Array<String>) {
   val client = TDClient.newClient();
   println("Start connecting to TreasureData Database.")
@@ -76,3 +88,6 @@ fun main(args: Array<String>) {
   System.exit(0)
 }
 ```
+
+## ToDo
+- mavenかgradleで管理したい
