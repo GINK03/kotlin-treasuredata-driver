@@ -16,6 +16,19 @@
 ### 解決のアプローチ
 - Scala Likeで使えるKotlinでTreasureDataを構造化して、非構造化データと、構造化データの両方を分析できるテンプレートを提供する
 
+### td-command toolbeltのセットアップ
+```console
+$ curl -L https://toolbelt.treasuredata.com/sh/install-ubuntu-trusty-td-agent2.sh | sh
+```
+
+```console
+$ td -e https://api.treasuredata.com account -f
+Email: user@domain.com
+Password (typing will be hidden):
+Authenticated successfully.
+```
+
+
 ### 使い方
 1. TreasureDataに投げるクエリをkotlinDriver.sqlに記述する
 2. TreasureData.ktを編集して、どのような出力を得たいか、プログラミングする
