@@ -7,6 +7,8 @@ import org.msgpack.core.MessageFormat
 import com.treasuredata.client.model.*
 import java.io.InputStream
 import java.io.File
+import java.io.PrintWriter
+
 import kotlin.String
 
 import com.google.gson.Gson
@@ -14,11 +16,20 @@ import com.google.gson.GsonBuilder
 
 
 val gson = Gson()
-
-
-fun fraction(array: ArrayValue ) { 
-  //println( gson.toJson( array.toList().map{ x -> x.toString()} ) )
-  //tuuidInv(array.toList().map{ x -> x.toString() })
+val pwriter = PrintWriter("download.json")
+fun f1( array: ArrayValue ) { 
+  val arr = array.toList().map{ x -> x.toString()}
+  val tuuid = arr[6]
+  when { 
+    tuuid != "null" -> { 
+      //println( tuuid )
+      val json = gson.toJson( arr )
+      pwriter.append(json + "\n")
+    }
+  }
+}
+fun close() {
+  pwriter.close()
 }
 
 fun <T> printerr(t: T) {
@@ -50,8 +61,9 @@ fun main(args: Array<String>) {
   println("Unpackerが呼び出されました")
   while( unpacker.hasNext() ) {
     val array = unpacker.unpackValue().asArrayValue()
-    fraction(array)
+    f1(array)
   }
+  close()
   println("Finished access to TresureData Database.")
   System.exit(0)
 }
